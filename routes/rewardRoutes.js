@@ -1,5 +1,5 @@
 import express from "express";
-import Reward from "../models/Reward.js";
+import Reward from "../models/reward.js";
 
 const router = express.Router();
 
