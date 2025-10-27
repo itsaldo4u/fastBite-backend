@@ -107,12 +107,10 @@ router.get("/track/:trackingId", async (req, res) => {
     });
   } catch (err) {
     console.error("Gabim gjatë gjurmimit të porosisë:", err);
-    res
-      .status(500)
-      .json({
-        message: "Gabim gjatë gjurmimit të porosisë",
-        error: err.message,
-      });
+    res.status(500).json({
+      message: "Gabim gjatë gjurmimit të porosisë",
+      error: err.message,
+    });
   }
 });
 
@@ -136,12 +134,10 @@ router.patch("/:id/status", async (req, res) => {
     res.json({ message: "Statusi u ndryshua me sukses", order: updatedOrder });
   } catch (err) {
     console.error("Gabim gjatë ndryshimit të statusit:", err);
-    res
-      .status(500)
-      .json({
-        message: "Gabim gjatë ndryshimit të statusit",
-        error: err.message,
-      });
+    res.status(500).json({
+      message: "Gabim gjatë ndryshimit të statusit",
+      error: err.message,
+    });
   }
 });
 
@@ -216,19 +212,15 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     console.error("Gabim në përditësimin e porosisë:", err);
     if (err.name === "ValidationError") {
-      return res
-        .status(400)
-        .json({
-          message: "Gabim në të dhënat e dërguara gjatë përditësimit.",
-          errors: err.errors,
-        });
-    }
-    res
-      .status(500)
-      .json({
-        message: "Gabim në përditësimin e porosisë",
-        error: err.message,
+      return res.status(400).json({
+        message: "Gabim në të dhënat e dërguara gjatë përditësimit.",
+        errors: err.errors,
       });
+    }
+    res.status(500).json({
+      message: "Gabim në përditësimin e porosisë",
+      error: err.message,
+    });
   }
 });
 

@@ -1,6 +1,6 @@
 // routes/products.js
 import express from "express";
-import Product from "../models/Product.js";
+import Product from "../models/product.js";
 import { nanoid } from "nanoid";
 
 const router = express.Router();

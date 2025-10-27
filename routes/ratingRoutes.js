@@ -1,7 +1,7 @@
 // routes/rating.js
 import express from "express";
 import Rating from "../models/rating.js";
-import Product from "../models/Product.js";
+import Product from "../models/product.js";
 
 const router = express.Router();
 
