@@ -1,8 +1,8 @@
 import express from "express";
 import Order from "../models/order.js";
+import Revenue from "../models/revenue.js";
 
 const router = express.Router();
-
 /* -------------------------------------
    1. POST: Krijon porosi të re
 ------------------------------------- */
@@ -69,11 +69,10 @@ router.get("/track/:trackingId", async (req, res) => {
     const { trackingId } = req.params;
     const order = await Order.findOne({ trackingId });
 
-    if (!order) {
+    if (!order)
       return res
         .status(404)
         .json({ message: "Porosia nuk u gjet me këtë tracking ID." });
-    }
 
     const {
       _id,
@@ -127,9 +126,24 @@ router.patch("/:id/status", async (req, res) => {
       { status },
       { new: true, runValidators: true }
     );
-
     if (!updatedOrder)
       return res.status(404).json({ message: "Porosia nuk u gjet." });
+
+    // --- SHTESA PËR REVENUE: regjistro fitimin kur porosia dorëzohet ---
+    if (status === "delivered") {
+      const order = updatedOrder;
+      const today = new Date().toISOString().slice(0, 10);
+      const start = new Date(today);
+      const end = new Date(start.getTime() + 86400000);
+
+      await Revenue.findOneAndUpdate(
+        { date: { $gte: start, $lt: end } },
+        {
+          $inc: { totalOrders: 1, totalRevenue: order.totalPrice },
+        },
+        { upsert: true, new: true }
+      );
+    }
 
     res.json({ message: "Statusi u ndryshua me sukses", order: updatedOrder });
   } catch (err) {
@@ -147,7 +161,6 @@ router.patch("/:id/status", async (req, res) => {
 router.patch("/:id/review", async (req, res) => {
   try {
     const { review, ratingMap } = req.body;
-
     if (!review && !ratingMap)
       return res
         .status(400)
@@ -162,7 +175,6 @@ router.patch("/:id/review", async (req, res) => {
       updateFields,
       { new: true, runValidators: true }
     );
-
     if (!updatedOrder)
       return res.status(404).json({ message: "Porosia nuk u gjet." });
 

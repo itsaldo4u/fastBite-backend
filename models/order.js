@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 // Schema për çdo item të porosisë
 const orderItemSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true }, // ✅ SHTUAR - ID e produktit origjinal
+    id: { type: String, required: true },
     title: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
@@ -86,6 +86,10 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// 🧹 Fshin automatikisht porositë pas 7 ditësh (604800 sekonda)
+orderSchema.index({ createdAt: 1 }, { expireAfterSeconds: 604800 });
+
+// Heq automatikisht fushat e pagesës kur metoda është 'cash'
 orderSchema.pre("validate", function (next) {
   if (this.paymentMethod === "cash") {
     this.cardNumber = undefined;

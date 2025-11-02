@@ -12,6 +12,7 @@ import offerRoutes from "./routes/offerRoutes.js";
 import rewardRoutes from "./routes/rewardRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import revenueRoutes from "./routes/revenueRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use("/offers", offerRoutes);
 app.use("/rewards", rewardRoutes);
 app.use("/ratings", ratingRoutes);
 app.use("/contact", contactRoutes);
+app.use("/revenues", revenueRoutes);
 
 // MongoDB connection
 mongoose
