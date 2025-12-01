@@ -1,9 +1,9 @@
 import express from "express";
-import Contact from "../models/Contact.js";
+import Contact from "../models/contact.js";
 
 const router = express.Router();
 
-// GET - Merr të gjitha mesazhet (KY MUNGON!)
+// GET - Merr të gjitha mesazhet
 router.get("/", async (req, res) => {
   try {
     const messages = await Contact.find().sort({ createdAt: -1 });

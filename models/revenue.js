@@ -1,17 +1,31 @@
-// models/Revenue.js
+// models/revenue.js
 import mongoose from "mongoose";
 
-const revenueSchema = new mongoose.Schema({
-  orderId: { type: String, required: true },
-  totalPrice: { type: Number, required: true },
-  createdAt: { type: Date, required: true },
-  items: [
-    {
-      title: String,
-      quantity: Number,
-      price: Number,
+const revenueSchema = new mongoose.Schema(
+  {
+    date: {
+      type: Date,
+      required: true,
+      unique: true, // Një record për ditë
     },
-  ],
-});
+    totalOrders: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    totalRevenue: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-export default mongoose.model("Revenue", revenueSchema);
+// Index për kërkime më të shpejtë sipas datës
+revenueSchema.index({ date: 1 });
+
+const Revenue = mongoose.model("Revenue", revenueSchema);
+export default Revenue;
